@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+<body>
+    <body>
+        <header>
+            <h1>Project Explorer</h1>
+            <h2>One Stop Database for Academic Projects</h2> 
+        </header>
+        
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="search.html">Projects</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+
+        <main>
+            <section>
+                <h2>Search Projects By</h2>
+                <form name="searchForm">
+                    <p>
+                        <input type="text" name="searchTerm" placeholder="Project Name, Authors, Abstract, Tags">
+                    </p>
+
+                    <p>
+                        Search By: <br>
+                        <select name="searchType" id="">
+                            <option value="Name">Name</option>
+                            <option value="Abstract">Abstract</option>
+                            <option value="Authors">Authors</option>
+                            <option value="Tags">Tags</option>
+                        </select>
+                    </p>
+
+                    <input type="submit" value="Search">
+                </form>
+            </section>
+
+            <section>
+                <h1>Search Result</h1>
+                <div>
+                    <h2>Project 1</h2>
+                    <ul>
+                        <li>Name: Project 1</li>
+                        <li>Description: Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla exercitationem, debitis iste quibusdam cumque autem mollitia quam nihil, nam, necessitatibus ratione eum non! Fugit, in deserunt dolor laborum nulla commodi.</li>
+                        <li>Program: Computer Science</li>
+                        <li>Authors: John Doe, Jane Doe</li>
+                        <li>Tags: #Asphyxia, #GSW</li>
+                        <li>Year: 2018</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+</body>
+</html>
