@@ -76,10 +76,10 @@
                     <div class="col-md-6">
                         <h3 class="mt-5">Edit Project</h3>
                         <hr>
-                            <form>
+                            <form name="editProject">
                                 <div class="form-group">
                                     <label for="projectName" class="form-label">Project name</label>
-                                    <input type="text" class="form-control" id="projectName" placeholder="Project 1">
+                                    <input type="text" class="form-control" name="name" placeholder="Project 1">
                                 </div>
                     
                                 <div class="form-group">
@@ -89,12 +89,12 @@
                     
                                 <div class="form-group">
                                     <label for="authors" class="form-label">Author(s)</label>
-                                    <input type="text" class="form-control" id="authors" placeholder="Ade Chris">
+                                    <input type="text" class="form-control" name="authors" placeholder="Ade Chris">
                                 </div>
                     
                                 <div class="form-group">
                                     <label for="tags" class="form-label">Tag(s)</label>
-                                    <input type="text" class="form-control" id="tags" placeholder="#web">
+                                    <input type="text" class="form-control" name="tags" placeholder="#web">
                                 </div>
 
                                 <button class="btn btn-primary">Save</button>
@@ -106,8 +106,8 @@
                         <hr>
                             <form>
                                 <div class="form-group d-flex">
-                                    <input type="text" class="form-control" id="" placeholder="Click to open file browser">
-                                    <button type="submit">Browse</button>   
+                                    <input type="text" class="form-control" name="projectFile" placeholder="Click to open file browser">
+                                    <input type="submit" value="Browse">  
                                 </div>
                                 <hr>
                             </form>
