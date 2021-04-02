@@ -6,7 +6,9 @@ const gradList = document.querySelector('select[name = graduationYear]');
 const signUp = document.getElementById('signupForm');
 const errAlert = document.getElementById('error-alert');
 const firstName = document.querySelector('[name = firstName]');
-//console.log(firstName).value;
+const lastName = document.querySelector('input[name = lastName]');
+// console.log(lastName);
+// console.log(firstName);
 const navHead = document.getElementById("nav-head");
 const userStatus = document.getElementById("user-status");
 const loginForm = document.getElementById("loginForm");
@@ -93,13 +95,13 @@ if (window.location.href.includes('register.html')) {
                 e.preventDefault();
 
                 const registered = {
-                    firstname: document.querySelector('[name = firstName]').value,
-                    lastname: document.querySelector('[name = lastName]').value,
-                    email: document.querySelector('[name = email]').value,
-                    password: document.querySelector('[name = password]').value,
-                    matricNumber: document.querySelector('[name = matricNumber]').value,
+                    firstname: document.querySelector("input[name =firstName]").value,
+                    lastname: document.querySelector('input[name = lastName]').value,
+                    email: document.querySelector('input[name = email]').value,
+                    password: document.querySelector('input[name = password]').value,
+                    matricNumber: document.querySelector('input[name = matricNumber]').value,
                     program: document.getElementById('program'),
-                    graduationYear: document.querySelector('[name = graduationYear]').value
+                    graduationYear: document.querySelector('select [name = graduationYear]').value
                 }
 
                 onSubmit(registered);
@@ -156,8 +158,8 @@ if (window.location.href.includes('register.html')) {
 
                     const data = await response.json();
                     if (data.status !== 200) {
-                        const errDiv = document.createElement("div");
-                        errDiv.classList.add("alert alert-danger w-75");
+                        let errDiv = document.createElement("div");
+                        errDiv.classList.add("alert", "alert-danger", "w-75");
                         errDiv.textContent = "Invalid email/password";
                         loginForm.prepend(errDiv);
                         
