@@ -49,6 +49,7 @@ if (window.location.href.includes('register.html')) {
 if (window.location.href.includes('register.html')) {
     window.onload = function () {
         errAlert.style.display = 'none';
+
         async function progPopulate() {
             try {
                 // POPULATE THE PROGRAM LIST
@@ -93,16 +94,17 @@ if (window.location.href.includes('register.html')) {
             
             signUp.addEventListener("submit", function (e) {
                 e.preventDefault();
+                
+                  const  firstName =  document.getElementById("firstName").value
+                  const lastName = document.getElementById("lastName").value
+                  const email = document.getElementById("email").value
+                  const  password = document.getElementById("passsword").value
+                  const  matricNumber = document.getElementById("matricNumber").value
+                  const  program = document.getElementById('program')
+                  const graduationYear = document.getElementById("graduationYear").value
 
-                const registered = {
-                    firstname: document.querySelector("input[name =firstName]").value,
-                    lastname: document.querySelector('input[name = lastName]').value,
-                    email: document.querySelector('input[name = email]').value,
-                    password: document.querySelector('input[name = password]').value,
-                    matricNumber: document.querySelector('input[name = matricNumber]').value,
-                    program: document.getElementById('program'),
-                    graduationYear: document.querySelector('select [name = graduationYear]').value
-                }
+                  const registered = { firstName, lastName, email, password, matricNumber, program, graduationYear }
+                
 
                 onSubmit(registered);
             })
@@ -135,6 +137,9 @@ if (window.location.href.includes('register.html')) {
         }
     }
 
+    
+                // LOGIN
+    
     if (window.location.href.includes('login.html')) {
         window.onload = function () {
 
