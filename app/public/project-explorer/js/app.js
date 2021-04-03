@@ -5,8 +5,8 @@ const selectOptions = document.getElementById('program');
 const gradList = document.querySelector('select[name = graduationYear]');
 const signUp = document.getElementById('signupForm');
 const errAlert = document.getElementById('error-alert');
-const firstName = document.querySelector('[name = firstName]');
-const lastName = document.querySelector('input[name = lastName]');
+//const firstName = document.querySelector('[name = firstName]');
+//const lastName = document.querySelector('input[name = lastName]');
 // console.log(lastName);
 // console.log(firstName);
 const navHead = document.getElementById("nav-head");
@@ -17,7 +17,7 @@ const loginForm = document.getElementById("loginForm");
 
 
 // INDEX PAGE
-if (window.location.href.includes('register.html')) {
+    let thisPage = window.location.href
     window.onload = async function () {
         
         // const cookieValue = document.cookie
@@ -39,11 +39,11 @@ if (window.location.href.includes('register.html')) {
 
         logoutBtn.addEventListener("click", function () {
             document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-            windows.location.replace('index.html');
+            windows.location = "/project-explorer/index.html";
 
         })
     }
-}
+
 
 
 if (window.location.href.includes('register.html')) {
@@ -95,18 +95,18 @@ if (window.location.href.includes('register.html')) {
             signUp.addEventListener("submit", function (e) {
                 e.preventDefault();
                 
-                  const  firstName =  document.getElementById("firstName").value
-                  const lastName = document.getElementById("lastName").value
+                  const  firstname =  document.getElementById("firstName").value;
+                  const lastname = document.getElementById("lastName").value
                   const email = document.getElementById("email").value
                   const  password = document.getElementById("passsword").value
                   const  matricNumber = document.getElementById("matricNumber").value
                   const  program = document.getElementById('program')
                   const graduationYear = document.getElementById("graduationYear").value
 
-                  const registered = { firstName, lastName, email, password, matricNumber, program, graduationYear }
+                  const registered = { firstname, lastname, email, password, matricNumber, program, graduationYear }
                 
 
-                onSubmit(registered);
+                onSubmit(registered)
             })
 
             async function onSubmit(registered) {
@@ -114,7 +114,7 @@ if (window.location.href.includes('register.html')) {
                     const response = await fetch("/api/register", {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify(registered)
+                        body: JSON.stringify(registered),
                     })
 
                     const data = await response.json();
@@ -124,7 +124,7 @@ if (window.location.href.includes('register.html')) {
                         let dataError = response.error.map(element => {
                             return `<p>${element}</p>`;
                         })
-                        errAlert.innerHTML = dataError;
+                        errAlert.innerHTML = dataError.join("");
                     } else {
                         document.cookie = `uid = ${response.data.id}; domain=; path=/ `;
                         windows.location.replace('index.html');
