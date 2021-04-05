@@ -2,7 +2,71 @@
 const selectOptions = document.querySelector("[name = program]");
 const gradList = document.querySelector("[name = graduationYear]");
 const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
+const createProjectForm = document.getElementById("createProjectForm");
+const showCase = document.querySelector(".showcase");
+//console.log(showCase);
+const links = document.getElementById("links")
+const navigation = document.getElementById("nav-head");
+const userStatus = document.getElementById("user-status");
+// console.log(userStatus);
+// console.log(navigation);
 
+// FUNCTIONS
+
+// function errorMessage() {
+//                 let errorDiv = document.createElement("div");
+//                 errorDiv.classList.add("alert", "alert-danger");
+//                 let dataErrors = respData.errors.map(dataErr => {
+//                     return `<p>${dataErr}</p>`;
+//                 })
+//                 errorDiv.innerHTML = dataErrors.join("");
+//                 signupForm.prepend(errorDiv);
+//                 throw "Unsuccesful"; 
+// }
+
+// function reDirect() {
+//     window.location.replace("index.html");
+// }
+
+  
+
+
+    
+const cookieCheck = document.cookie.split("=");
+console.log(cookieCheck[0]); 
+console.log(cookieCheck[1]); 
+    if (cookieCheck !== -1 && cookieCheck[1]) {
+        //console.log(true);
+        fetch(`/api/users/${cookieCheck[1]}`)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                //console.log(userStatus);
+                let logoutBtn = document.createElement("button");
+                let greetUser = document.createElement("span");
+                logoutBtn.textContent = "Logout";
+                logoutBtn.classList.add("btn", "btn-info");
+                greetUser.innerHTML = `<span id = "username"> Hi, ${data.firstname}</span>`;
+                userStatus.classList.add("invisible");
+                navigation.appendChild(logoutBtn);
+                navigation.appendChild(greetUser);
+            })
+            .catch ((err) => {
+                console.log('ERROR:', err.message);
+            })
+    } 
+    
+
+
+
+
+
+
+        
 
 if (window.location.href.includes("register.html")) {
     window.onload = function () {
@@ -76,12 +140,14 @@ if (window.location.href.includes("register.html")) {
         
             
             const respData = await response.json();
-            console.log(respData);
+            // console.log(respData);
 
-          if (respData.status === 200) {
+          if (respData.status === "ok") {
                 document.cookie = `uid=${respData.data.id};path=/`;
                 window.location.replace("index.html");
-            } else {
+                
+            } 
+            else {
                 let errorDiv = document.createElement("div");
                 errorDiv.classList.add("alert", "alert-danger");
                 let dataErrors = respData.errors.map(dataErr => {
@@ -97,4 +163,137 @@ if (window.location.href.includes("register.html")) {
         
         }
     }
+}
+
+
+// LOGIN
+if (window.location.href.includes("login.html")) {
+    window.onload = function () {
+        loginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.querySelector("[name = email]").value;
+            const password = document.querySelector("[name = password]").value;
+            const loggedIn = { email, password};
+    
+            onLogIn(loggedIn);
+        })
+
+       async function onLogIn(loggedIn) {
+           try{
+               const response = await fetch("/api/login", {
+                   method: "POST",
+                   headers: {"Content-Type" : "application/json"},
+                   body: JSON.stringify(loggedIn),
+               });
+
+               const respData = await response.json();
+               console.log(respData);
+
+               if (respData.status !== "ok") {
+                   let errorDiv = document.createElement("div");
+                   errorDiv.classList.add("alert", "alert-danger");
+                   errorDiv.textContent = "Invalid email/password";
+                   loginForm.prepend(errorDiv);
+               } else {
+                   document.cookie = `uid=${respData.data.id}; path=/`;
+                   window.location.replace("index.html");
+               }
+           } catch(err){
+               console.log(err);
+           }
+       }
+    }
+}
+
+// CREATE PROJECT
+if (window.location.href.includes("createproject.html")) {
+    window.onload = function () {
+
+        const cookieCheck = document.cookie.indexOf("uid=");
+        // console.log(cookieCheck); 
+        if (cookieCheck !== -1) {
+            console.log("No cookies");
+            window.location.replace("login.html") // redirect to login page.
+        }
+        
+        createProjectForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const projectName = document.getElementById("projectName").value;
+            const abstract = document.getElementById("abstract").value;
+            const authors = document.getElementById("authors").value.split(",");
+            const tags = document.getElementById("tags").value.split(" ");
+
+            const createProject = { projectName, abstract, authors, tags }
+
+            onCreateProject(createProject);
+        })
+
+        async function onCreateProject(createProject) {
+            try{
+                const response = await fetch("/api/projects", {
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify(createProject), 
+            });
+
+                const respData = await response.json();
+                console.log(respData);
+
+                if (respData !== "ok") {
+                    let errorDiv = document.createElement("div");
+                    errorDiv.classList.add("alert", "alert-danger");
+                    let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
+                    errorDiv.innerHTML = dataErrors.join("");
+                    createProjectForm.prepend(errorDiv);
+                } else {
+                    window.location.replace("index.html");
+                }
+            } catch (err){
+                console.log(err);
+            }
+        }
+    }
+}
+
+// UPDATE PROJECT LIST
+if (window.location.href.includes("index.html")) {
+    window.onload = function () {
+        
+    fetch("/api/projects")
+        .then((response) => {
+            //console.log('response', response);
+            return response.json();
+        })
+        .then((data) => {
+            //console.log(data);
+            let projects = data.map((project) => {
+            // let title = document.getElementById("title");
+            // let subtitle = document.getElementById("subtitle");
+            // let text = document.getElementById("abstract-text");
+            // let link = document.createElement("a");
+            // link.classList.add("card-link");
+            // links.appendChild(link);
+
+            // // console.log(data[0].name);
+            // title.innerText = project.name;
+            // subtitle.innerText = project.authors.join(", ");
+            // text.innerText = project.abstract;
+            // link.innerText = project.tags.join(" ");
+
+            return `<div class="card-deck">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <a href = "viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
+                            <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(", ")}</h6>
+                            <p class="card-text">${project.abstract}</p>
+                            <a class = "card-link">${project.tags.join(" ")}</a>
+                        </div>
+                    </div>
+                    </div>`;
+            })
+            
+            showCase.innerHTML = projects;
+
+        })
+}
 }
