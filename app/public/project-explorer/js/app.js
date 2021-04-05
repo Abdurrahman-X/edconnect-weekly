@@ -31,42 +31,47 @@ const userStatus = document.getElementById("user-status");
 
   
 
-
-    
 const cookieCheck = document.cookie.split("=");
-console.log(cookieCheck[0]); 
-console.log(cookieCheck[1]); 
-    if (cookieCheck !== -1 && cookieCheck[1]) {
-        //console.log(true);
-        fetch(`/api/users/${cookieCheck[1]}`)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                //console.log(userStatus);
-                let logoutBtn = document.createElement("button");
-                let greetUser = document.createElement("span");
-                logoutBtn.textContent = "Logout";
-                logoutBtn.classList.add("btn", "btn-info");
-                greetUser.innerHTML = `<span id = "username"> Hi, ${data.firstname}</span>`;
-                userStatus.classList.add("invisible");
-                navigation.appendChild(logoutBtn);
-                navigation.appendChild(greetUser);
-            })
-            .catch ((err) => {
-                console.log('ERROR:', err.message);
-            })
-    } 
-    
+        //console.log(cookieCheck[0]); 
+        //console.log(cookieCheck[1]); 
+        if (cookieCheck[0] === "uid" && cookieCheck[1]) {
+            //console.log(true);
+            fetch(`/api/users/${cookieCheck[1]}`)
+                .then((response) => {
+                    //console.log(response);
+                    return response.json();
+                })
+                .then((data) => {
+                    //console.log(data);
+                    //console.log(userStatus);
+                    // let logoutBtn = document.createElement("button");
+                    // let greetUser = document.createElement("span");
+                    // logoutBtn.textContent = "Logout";
+                    // logoutBtn.classList.add("btn", "btn-info");
+                    // greetUser.innerHTML = `<span id = "username"> Hi, ${data.firstname}</span>`;
+                    // userStatus.classList.add("invisible");
+                    // navigation.appendChild(logoutBtn);
+                    // navigation.appendChild(greetUser);
+                    let inAll = `
+                                    <li class="nav-item">
+                                         <a id = "logout" class="nav-link">Logout</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id = "username">Hi, ${data.firstname}</a>
+                                    </li>
+                                `;
+                    userStatus.innerHTML = inAll;
 
-
-
-
-
-
-        
+                    let logoutBtn = document.getElementById("logout");
+                    logoutBtn.addEventListener("click", function (e) {
+                        document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                        window.location.href = "index.html";
+                    })
+                })
+                .catch ((err) => {
+                    console.log('ERROR:', err.message);
+                })
+        }
 
 if (window.location.href.includes("register.html")) {
     window.onload = function () {
@@ -209,9 +214,11 @@ if (window.location.href.includes("login.html")) {
 if (window.location.href.includes("createproject.html")) {
     window.onload = function () {
 
-        const cookieCheck = document.cookie.indexOf("uid=");
+        // const cookieCheck = document.cookie.indexOf("uid=");
         // console.log(cookieCheck); 
-        if (cookieCheck !== -1) {
+        //if (cookieCheck !== -1) 
+        const cookieCheck = document.cookie.split(";").find(item => item.startsWith("uid="));
+        if(!cookieCheck) {
             console.log("No cookies");
             window.location.replace("login.html") // redirect to login page.
         }
@@ -237,16 +244,17 @@ if (window.location.href.includes("createproject.html")) {
             });
 
                 const respData = await response.json();
-                console.log(respData);
+                // console.log(respData);
 
-                if (respData !== "ok") {
+                if (respData === "ok") {
+                    window.location.replace("index.html");
+                } else {
                     let errorDiv = document.createElement("div");
                     errorDiv.classList.add("alert", "alert-danger");
                     let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
                     errorDiv.innerHTML = dataErrors.join("");
                     createProjectForm.prepend(errorDiv);
-                } else {
-                    window.location.replace("index.html");
+                    
                 }
             } catch (err){
                 console.log(err);
@@ -258,8 +266,8 @@ if (window.location.href.includes("createproject.html")) {
 // UPDATE PROJECT LIST
 if (window.location.href.includes("index.html")) {
     window.onload = function () {
-        
-    fetch("/api/projects")
+
+        fetch("/api/projects")
         .then((response) => {
             //console.log('response', response);
             return response.json();
@@ -297,3 +305,4 @@ if (window.location.href.includes("index.html")) {
         })
 }
 }
+        
