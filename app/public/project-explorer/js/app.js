@@ -225,12 +225,12 @@ if (window.location.href.includes("createproject.html")) {
         
         createProjectForm.addEventListener("submit", function (e) {
             e.preventDefault();
-            const projectName = document.getElementById("projectName").value;
-            const abstract = document.getElementById("abstract").value;
-            const authors = document.getElementById("authors").value.split(",");
-            const tags = document.getElementById("tags").value.split(" ");
+            const name  = document.querySelector("[name = name]").value
+            const abstract = document.getElementById("abstract").value
+            const authors = document.getElementById("authors").value.split(",")
+            const tags = document.getElementById("tags").value.split(" ")
 
-            const createProject = { projectName, abstract, authors, tags }
+            const createProject = { name, abstract, authors, tags }
 
             onCreateProject(createProject);
         })
@@ -243,8 +243,9 @@ if (window.location.href.includes("createproject.html")) {
                 body: JSON.stringify(createProject), 
             });
 
+                //console.log(response);
                 const respData = await response.json();
-                // console.log(respData);
+                //console.log(respData);
 
                 if (respData.status !== "ok") {
                     let errorDiv = document.createElement("div");
@@ -262,49 +263,50 @@ if (window.location.href.includes("createproject.html")) {
     }
 }
 
-// UPDATE PROJECT LIST
-if (window.location.href.includes("index.html")) {
+// // UPDATE PROJECT LIST
+ if (window.location.href.includes("index.html")) {
+//     window.onload = function () {
+
     window.onload = function () {
 
-        fetch("/api/projects")
-        .then((response) => {
-            //console.log('response', response);
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            let projects = data.map((project) => {
-            // let title = document.getElementById("title");
-            // let subtitle = document.getElementById("subtitle");
-            // let text = document.getElementById("abstract-text");
-            // let link = document.createElement("a");
-            // link.classList.add("card-link");
-            // links.appendChild(link);
+        async function updateList() {
+            let response = await fetch("/api/projects")
+            let data = await response.json()
+            let projects = data.map(project => {
 
-            // // console.log(data[0].name);
-            // title.innerText = project.name;
-            // subtitle.innerText = project.authors.join(", ");
-            // text.innerText = project.abstract;
-            // link.innerText = project.tags.join(" ");
-                for (let i = 0; i < 4; i++) {
+    //         // let title = document.getElementById("title");
+    //         // let subtitle = document.getElementById("subtitle");
+    //         // let text = document.getElementById("abstract-text");
+    //         // let link = document.createElement("a");
+    //         // link.classList.add("card-link");
+    //         // links.appendChild(link);
+
+    //         //console.log(project[0].name);
+    //         // // console.log(data[0].name);
+    //         // title.innerText = project.name;
+    //         // subtitle.innerText = project.authors.join(", ");
+    //         // text.innerText = project.abstract;
+    //         // link.innerText = project.tags.join(" ");
+                
                     return `
                     <div class="card mb-4">
                         <div class="card-body">
-                            <a href = "viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
+                            <h5 class="card-title text-primary">${project.name}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(", ")}</h6>
                             <p class="card-text">${project.abstract}</p>
                             <a class = "card-link">${project.tags.join(" ")}</a>
                         </div>
                    
                     </div>`;
-        
-                }
-            
-            })
-            
-            showCase.innerHTML = projects;
+                }).join("");
+                showCase.innerHTML = projects;
+            }
+             updateList();
 
-        })
-}
-}
+        }
+ }
+                    
+            
+    
+
         
