@@ -246,15 +246,14 @@ if (window.location.href.includes("createproject.html")) {
                 const respData = await response.json();
                 // console.log(respData);
 
-                if (respData === "ok") {
-                    window.location.replace("index.html");
-                } else {
+                if (respData.status !== "ok") {
                     let errorDiv = document.createElement("div");
                     errorDiv.classList.add("alert", "alert-danger");
                     let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
                     errorDiv.innerHTML = dataErrors.join("");
                     createProjectForm.prepend(errorDiv);
-                    
+                } else {
+                    window.location.replace("index.html");
                 }
             } catch (err){
                 console.log(err);
@@ -273,7 +272,7 @@ if (window.location.href.includes("index.html")) {
             return response.json();
         })
         .then((data) => {
-            //console.log(data);
+            console.log(data);
             let projects = data.map((project) => {
             // let title = document.getElementById("title");
             // let subtitle = document.getElementById("subtitle");
@@ -287,8 +286,8 @@ if (window.location.href.includes("index.html")) {
             // subtitle.innerText = project.authors.join(", ");
             // text.innerText = project.abstract;
             // link.innerText = project.tags.join(" ");
-
-            return `<div class="card-deck">
+                for (let i = 0; i < 4; i++) {
+                    return `
                     <div class="card mb-4">
                         <div class="card-body">
                             <a href = "viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
@@ -296,8 +295,11 @@ if (window.location.href.includes("index.html")) {
                             <p class="card-text">${project.abstract}</p>
                             <a class = "card-link">${project.tags.join(" ")}</a>
                         </div>
-                    </div>
+                   
                     </div>`;
+        
+                }
+            
             })
             
             showCase.innerHTML = projects;
