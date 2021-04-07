@@ -80,12 +80,32 @@ const cookieCheck = document.cookie.split("=");
         window.onload = function () {
             let showCase = document.querySelector('.showcase');
             showCase.innerHTML = "";
-            async function updateList() {
-                let response = await fetch("/api/projects")
-                let data = await response.json()
-              
+            
+            fetch("/api/projects")
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    for (let i = 0; i < 4; i++) {
+                        let projects = data.map((project) => {
+                            return `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <a href ="viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
+                                <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(",")}</h6>
+                                <p class="card-text">${project.abstract}</p>
+                                <a class = "card-link">${project.tags.join(" ")}</a>
+                            </div>
+                        </div>`
+                        })
+                        showCase[0].innerHTML = projects;
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                })
                     
-                let projects = data.map((project) => {
+       
     
         //         // let title = document.getElementById("title");
         //         // let subtitle = document.getElementById("subtitle");
@@ -100,22 +120,7 @@ const cookieCheck = document.cookie.split("=");
         //         // subtitle.innerText = project.authors.join(", ");
         //         // text.innerText = project.abstract;
         //         // link.innerText = project.tags.join(" ");
-                    
-                        return `
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <a href ="viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
-                                <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(",")}</h6>
-                                <p class="card-text">${project.abstract}</p>
-                                <a class = "card-link">${project.tags.join(" ")}</a>
-                            </div>
-                       
-                        </div>`;
-                    }).join("");
-                    showCase.innerHTML = projects;
-                }
-            
-                 updateList();
+                
     
             }
      }
