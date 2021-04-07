@@ -247,15 +247,15 @@ if (window.location.href.includes("createproject.html")) {
                 const respData = await response.json();
                 console.log(respData);
 
-                // if (respData.status !== "ok") {
-                //     let errorDiv = document.createElement("div");
-                //     errorDiv.classList.add("alert", "alert-danger");
-                //     let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
-                //     errorDiv.innerHTML = dataErrors.join("");
-                //     createProjectForm.prepend(errorDiv);
-                // } else {
-                //     window.location.replace("index.html");
-                // }
+                if (respData.status !== "ok") {
+                    let errorDiv = document.createElement("div");
+                    errorDiv.classList.add("alert", "alert-danger");
+                    let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
+                    errorDiv.innerHTML = dataErrors.join("");
+                    createProjectForm.prepend(errorDiv);
+                } else {
+                    window.location.replace("index.html");
+                }
             } catch (err){
                 console.log(err);
             }
@@ -272,6 +272,8 @@ if (window.location.href.includes("createproject.html")) {
         async function updateList() {
             let response = await fetch("/api/projects")
             let data = await response.json()
+            for (let i = 0; i < 4; i++) {
+                
             let projects = data.map(project => {
 
     //         // let title = document.getElementById("title");
@@ -301,6 +303,7 @@ if (window.location.href.includes("createproject.html")) {
                 }).join("");
                 showCase.innerHTML = projects;
             }
+        }
              updateList();
 
         }
