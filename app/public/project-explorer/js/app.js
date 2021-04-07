@@ -4,7 +4,7 @@ const gradList = document.querySelector("[name = graduationYear]");
 const signupForm = document.getElementById("signupForm");
 const loginForm = document.getElementById("loginForm");
 const createProjectForm = document.getElementById("createProjectForm");
-const showCase = document.querySelector(".showcase");
+
 //console.log(showCase);
 const links = document.getElementById("links")
 const navigation = document.getElementById("nav-head");
@@ -72,6 +72,54 @@ const cookieCheck = document.cookie.split("=");
                     console.log('ERROR:', err.message);
                 })
         }
+
+        // // UPDATE PROJECT LIST
+ if (window.location.href.includes("index.html")) {
+    //     window.onload = function () {
+    
+        window.onload = function () {
+            let showCase = document.querySelector('.showcase');
+            showCase.innerHTML = "";
+            async function updateList() {
+                let response = await fetch("/api/projects")
+                let data = await response.json()
+              
+                    
+                let projects = data.map((project) => {
+    
+        //         // let title = document.getElementById("title");
+        //         // let subtitle = document.getElementById("subtitle");
+        //         // let text = document.getElementById("abstract-text");
+        //         // let link = document.createElement("a");
+        //         // link.classList.add("card-link");
+        //         // links.appendChild(link);
+    
+        //         //console.log(project[0].name);
+        //         // // console.log(data[0].name);
+        //         // title.innerText = project.name;
+        //         // subtitle.innerText = project.authors.join(", ");
+        //         // text.innerText = project.abstract;
+        //         // link.innerText = project.tags.join(" ");
+                    
+                        return `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <a href ="viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
+                                <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(",")}</h6>
+                                <p class="card-text">${project.abstract}</p>
+                                <a class = "card-link">${project.tags.join(" ")}</a>
+                            </div>
+                       
+                        </div>`;
+                    }).join("");
+                    showCase.innerHTML = projects;
+                }
+            
+                 updateList();
+    
+            }
+     }
+                        
 
 if (window.location.href.includes("register.html")) {
     window.onload = function () {
@@ -219,7 +267,7 @@ if (window.location.href.includes("createproject.html")) {
         //if (cookieCheck !== -1) 
         const cookieCheck = document.cookie.split(";").find(item => item.startsWith("uid="));
         if(!cookieCheck) {
-            console.log("No cookies");
+            
             window.location.replace("login.html") // redirect to login page.
         }
         
@@ -243,9 +291,9 @@ if (window.location.href.includes("createproject.html")) {
                 body: JSON.stringify(createProject), 
             });
 
-                console.log(response);
+                //console.log(response);
                 const respData = await response.json();
-                console.log(respData);
+                //console.log(respData);
 
                 if (respData.status !== "ok") {
                     let errorDiv = document.createElement("div");
@@ -263,52 +311,7 @@ if (window.location.href.includes("createproject.html")) {
     }
 }
 
-// // UPDATE PROJECT LIST
- if (window.location.href.includes("index.html")) {
-//     window.onload = function () {
 
-    window.onload = function () {
-        showCase.innerHTML = "";
-        async function updateList() {
-            let response = await fetch("/api/projects")
-            let data = await response.json()
-            for (let i = 0; i < 4; i++) {
-                
-            let projects = data.map(project => {
-
-    //         // let title = document.getElementById("title");
-    //         // let subtitle = document.getElementById("subtitle");
-    //         // let text = document.getElementById("abstract-text");
-    //         // let link = document.createElement("a");
-    //         // link.classList.add("card-link");
-    //         // links.appendChild(link);
-
-    //         //console.log(project[0].name);
-    //         // // console.log(data[0].name);
-    //         // title.innerText = project.name;
-    //         // subtitle.innerText = project.authors.join(", ");
-    //         // text.innerText = project.abstract;
-    //         // link.innerText = project.tags.join(" ");
-                
-                    return `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <a href ="viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
-                            <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(",")}</h6>
-                            <p class="card-text">${project.abstract}</p>
-                            <a class = "card-link">${project.tags.join(" ")}</a>
-                        </div>
-                   
-                    </div>`;
-                }).join("");
-                showCase.innerHTML = projects;
-            }
-        }
-             updateList();
-
-        }
- }
-                    
             
     
 
