@@ -243,19 +243,19 @@ if (window.location.href.includes("createproject.html")) {
                 body: JSON.stringify(createProject), 
             });
 
-                //console.log(response);
+                console.log(response);
                 const respData = await response.json();
-                //console.log(respData);
+                console.log(respData);
 
-                if (respData.status !== "ok") {
-                    let errorDiv = document.createElement("div");
-                    errorDiv.classList.add("alert", "alert-danger");
-                    let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
-                    errorDiv.innerHTML = dataErrors.join("");
-                    createProjectForm.prepend(errorDiv);
-                } else {
-                    window.location.replace("index.html");
-                }
+                // if (respData.status !== "ok") {
+                //     let errorDiv = document.createElement("div");
+                //     errorDiv.classList.add("alert", "alert-danger");
+                //     let dataErrors = respData.errors.map(dataErr => `<p>${dataErr}</p>`);
+                //     errorDiv.innerHTML = dataErrors.join("");
+                //     createProjectForm.prepend(errorDiv);
+                // } else {
+                //     window.location.replace("index.html");
+                // }
             } catch (err){
                 console.log(err);
             }
@@ -268,7 +268,7 @@ if (window.location.href.includes("createproject.html")) {
 //     window.onload = function () {
 
     window.onload = function () {
-
+        showCase.innerHTML = "";
         async function updateList() {
             let response = await fetch("/api/projects")
             let data = await response.json()
@@ -291,8 +291,8 @@ if (window.location.href.includes("createproject.html")) {
                     return `
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title text-primary">${project.name}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(", ")}</h6>
+                            <a href ="viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
+                            <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(",")}</h6>
                             <p class="card-text">${project.abstract}</p>
                             <a class = "card-link">${project.tags.join(" ")}</a>
                         </div>
