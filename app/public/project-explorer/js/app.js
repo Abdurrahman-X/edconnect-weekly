@@ -12,119 +12,38 @@ const userStatus = document.getElementById("user-status");
 // console.log(userStatus);
 // console.log(navigation);
 
-// FUNCTIONS
+//let currentPage = window.location.href
 
-// function errorMessage() {
-//                 let errorDiv = document.createElement("div");
-//                 errorDiv.classList.add("alert", "alert-danger");
-//                 let dataErrors = respData.errors.map(dataErr => {
-//                     return `<p>${dataErr}</p>`;
-//                 })
-//                 errorDiv.innerHTML = dataErrors.join("");
-//                 signupForm.prepend(errorDiv);
-//                 throw "Unsuccesful"; 
-// }
+if (window.location.href.includes("register.html")){
 
-// function reDirect() {
-//     window.location.replace("index.html");
-// }
-
-  
-
-const cookieCheck = document.cookie.split("=");
-        //console.log(cookieCheck[0]); 
-        //console.log(cookieCheck[1]); 
-        if (cookieCheck[0] === "uid" && cookieCheck[1]) {
-            //console.log(true);
-            fetch(`/api/users/${cookieCheck[1]}`)
-                .then((response) => {
-                    //console.log(response);
-                    return response.json();
-                })
-                .then((data) => {
-                    //console.log(data);
-                    //console.log(userStatus);
-                    // let logoutBtn = document.createElement("button");
-                    // let greetUser = document.createElement("span");
-                    // logoutBtn.textContent = "Logout";
-                    // logoutBtn.classList.add("btn", "btn-info");
-                    // greetUser.innerHTML = `<span id = "username"> Hi, ${data.firstname}</span>`;
-                    // userStatus.classList.add("invisible");
-                    // navigation.appendChild(logoutBtn);
-                    // navigation.appendChild(greetUser);
-                    let inAll = `
-                                    <li class="nav-item">
-                                         <a id = "logout" class="nav-link">Logout</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id = "username">Hi, ${data.firstname}</a>
-                                    </li>
-                                `;
-                    userStatus.innerHTML = inAll;
-
-                    let logoutBtn = document.getElementById("logout");
-                    logoutBtn.addEventListener("click", function (e) {
-                        document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-                        window.location.href = "index.html";
-                    })
-                })
-                .catch ((err) => {
-                    console.log('ERROR:', err.message);
-                })
-        }
-
-        // // UPDATE PROJECT LIST
- if (window.location.href.includes("index.html")) {
-    //     window.onload = function () {
-    
-        window.onload = function () {
-            let showCase = document.querySelector('.showcase');
-            showCase.innerHTML = "";
-            
-            fetch("/api/projects")
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    for (let i = 0; i < 4; i++) {
-                        let projects = data.map((project) => {
-                            return `
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <a href ="viewproject.html?id=${project.id}"><h5 class="card-title text-primary">${project.name}</h5></a>
-                                <h6 class="card-subtitle mb-2 text-muted">${project.authors.join(",")}</h6>
-                                <p class="card-text">${project.abstract}</p>
-                                <a class = "card-link">${project.tags.join(" ")}</a>
-                            </div>
-                        </div>`
-                        })
-                        showCase[0].innerHTML = projects;
-                    }
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                })
-                    
-       
-    
-        //         // let title = document.getElementById("title");
-        //         // let subtitle = document.getElementById("subtitle");
-        //         // let text = document.getElementById("abstract-text");
-        //         // let link = document.createElement("a");
-        //         // link.classList.add("card-link");
-        //         // links.appendChild(link);
-    
-        //         //console.log(project[0].name);
-        //         // // console.log(data[0].name);
-        //         // title.innerText = project.name;
-        //         // subtitle.innerText = project.authors.join(", ");
-        //         // text.innerText = project.abstract;
-        //         // link.innerText = project.tags.join(" ");
+window.onload = async function () {
+    // document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
+    let cookieCheck = document.cookie.split("=");
+    console.log(cookieCheck[0]);
+    if (cookieCheck[0] === "uid" && cookieCheck[1]) {
+      let response = await fetch(`/api/users/${cookieCheck[1]}`)
+      let result = await response.json()
+      console.log(result);
+        let inAll = `
+                <li class="nav-item">
+                        <a id = "logout" class="nav-link">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id = "username">Hi, ${result.firstname}</a>
+                </li>
+                    `;
+        userStatus.innerHTML = inAll;
+      
+    }
+    let logoutBtn = document.getElementById("logout");
+        logoutBtn.addEventListener("click", function (e) {
+            document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            window.location.href = "index.html";
+        })
+  }
+}
                 
-    
-            }
-     }
-                        
+                          
 
 if (window.location.href.includes("register.html")) {
     window.onload = function () {
@@ -271,6 +190,7 @@ if (window.location.href.includes("createproject.html")) {
         // console.log(cookieCheck); 
         //if (cookieCheck !== -1) 
         const cookieCheck = document.cookie.split(";").find(item => item.startsWith("uid="));
+        
         if(!cookieCheck) {
             
             window.location.replace("login.html") // redirect to login page.
@@ -316,6 +236,42 @@ if (window.location.href.includes("createproject.html")) {
     }
 }
 
+ // // UPDATE PROJECT LIST
+ if (window.location.href.includes("index.html")) {
+    //     window.onload = function () {
+    
+        window.onload = function () {
+            let showCase = document.querySelector('.showcase');
+            //showCase.innerHTML = "";
+            
+            fetch("/api/projects")
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                   
+                        let projects = data.map(ele => {
+                            return `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <a href ="viewproject.html?id=${ele.id}"><h5 class="card-title text-primary">${ele.name}</h5></a>
+                                <h6 class="card-subtitle mb-2 text-muted">${ele.authors.join(",")}</h6>
+                                <p class="card-text">${ele.abstract}</p>
+                                <a class = "card-link">${ele.tags.join(" ")}</a>
+                            </div>
+                        </div>`
+                        
+                        });  
+                        showCase.innerHTML = projects;  
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+            }
+ }          
+       
+    
 
             
     
