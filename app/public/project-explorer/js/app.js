@@ -19,15 +19,15 @@ const userStatus = document.getElementById("user-status");
 // window.onload = async function () {
     // document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
     let cookieCheck = document.cookie.split("=");
-    console.log(cookieCheck[0]);
-    console.log(cookieCheck[1]);
+    // console.log(cookieCheck[0]);
+    // console.log(cookieCheck[1]);
     if (cookieCheck[0] === "uid" && cookieCheck[1]) {
        fetch(`/api/users/${cookieCheck[1]}`)
        .then((response) => {
            return response.json();
        })
         .then((data) => {
-            console.log(data);
+            //console.log(data);
             let inAll = `
                 <li class="nav-item">
                         <a id = "logout" class="nav-link">Logout</a>
@@ -280,7 +280,59 @@ if (window.location.href.includes("createproject.html")) {
                     console.log(err.message);
                 })
             }
- }          
+ }    
+ 
+ 
+ // VIEW PROJECT PAGE 
+ if (window.location.href.includes("viewproject.html")) {
+     const projectName = document.getElementById("project_name");
+     const projectAbstract = document.getElementById("project_abstract");
+     const projectAuthors = document.getElementById("project_authors");
+     const ProjectAuthor = document.getElementById("project_author")
+     const projectTags = document.getElementById("project_tags");
+     
+     
+     let params = new URLSearchParams(document.location.search.substring(1));
+     let userId = params.get("id")
+    //  console.log(params);
+    //  console.log(userId);
+
+     fetch(`/api/projects/${userId}`)
+        .then((response) => {
+            //console.log(response);
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            projectName.innerText = data.name;
+            projectAbstract.textContent = data.abstract;
+            projectAuthors.innerHTML = data.authors.map(author => {
+                return `<p class="card-text">${author}</p>`;
+            }).join("")
+            projectTags.innerHTML = data.tags.map(tag => {
+                return `<a href="#" class="card-link">#${tag}</a>`
+            }).join(",");
+
+            fetch(`/api/users/${data.createdBy}`)
+                .then((response) => {
+                    //console.log(response);
+                    return response.json();
+                })
+                .then((data) => {
+                    //console.log(data);
+                    ProjectAuthor.innerHTML = `Created By: <br> ${data.firstname} ${data.lastname}`;
+                })
+        .catch((err) => {
+            console.log(err.message);
+        })
+ })
+}
+
+
+
+
+ 
+ 
        
     
 
