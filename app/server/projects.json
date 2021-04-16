@@ -1,12 +1,1 @@
-{
-    "data": [
-      {
-        "id": "qqg8jtk5iso",
-        "name": "edconnect",
-        "abstract": "hello this is an abstract",
-        "authors": ["efe", "john"],
-        "tags": ["e-learning"],
-        "createdBy": "uqdecg701wb"
-      }
-    ]
-  }
+{"data":[{"id":"qqg8jtk5iso","name":"edconnect","abstract":"hello this is an abstract","authors":["efe","john"],"tags":["e-learning"],"createdBy":"uqdecg701wb"},{"id":"a9dnoqm6gaj","name":"Arduino Walking Stick","abstract":"Hi, this is a walking stick designed with Arduino for visually impaired persons.","authors":["Meezy"," Maleek"," Valentino"],"tags":["#Arduino","#Engineering","#Microprocessors"],"createdBy":"hi1k06x4gdw"}]}

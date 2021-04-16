@@ -310,8 +310,8 @@ if (window.location.href.includes("createproject.html")) {
                 return `<p class="card-text">${author}</p>`;
             }).join("")
             projectTags.innerHTML = data.tags.map(tag => {
-                return `<a href="#" class="card-link">#${tag}</a>`
-            }).join(",");
+                return `<a href="#" class="card-link">${tag}</a>`
+            }).join("");
 
             fetch(`/api/users/${data.createdBy}`)
                 .then((response) => {
