@@ -37,19 +37,19 @@ const userStatus = document.getElementById("user-status");
                 </li>
                     `;
             userStatus.innerHTML = inAll;
+
+            let logoutBtn = document.getElementById("logout");
+            console.log(logoutBtn);
+            logoutBtn.addEventListener("click", function (e) {
+                document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                window.location.href = "index.html";
+            })
         }) 
         .catch((err) => {
             console.log('ERROR:', err.message);
         })
-      
-        
-      
     }
-    // let logoutBtn = document.getElementById("logout");
-    //     logoutBtn.addEventListener("click", function (e) {
-    //         document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    //         window.location.href = "index.html";
-    //     })
+        
   //}
 //}
                 
@@ -262,14 +262,14 @@ if (window.location.href.includes("createproject.html")) {
                 .then((data) => {
                     console.log(data);
                    
-                        let projects = data.map(ele => {
+                        let projects = data.map(element => {
                             return `
                         <div class="card mb-4">
                             <div class="card-body">
-                                <a href ="viewproject.html?id=${ele.id}"><h5 class="card-title text-primary">${ele.name}</h5></a>
-                                <h6 class="card-subtitle mb-2 text-muted">${ele.authors.join(",")}</h6>
-                                <p class="card-text">${ele.abstract}</p>
-                                <a class = "card-link">${ele.tags.join(" ")}</a>
+                                <a href ="viewproject.html?id=${element.id}"><h5 class="card-title text-primary">${element.name}</h5></a>
+                                <h6 class="card-subtitle mb-2 text-muted">${element.authors.join(",")}</h6>
+                                <p class="card-text">${element.abstract}</p>
+                                <a class = "card-link">${element.tags.join(" ")}</a>
                             </div>
                         </div>`
                         
