@@ -14,34 +14,44 @@ const userStatus = document.getElementById("user-status");
 
 //let currentPage = window.location.href
 
-if (window.location.href.includes("register.html")){
+// if (window.location.href.includes("index.html")){
 
-window.onload = async function () {
+// window.onload = async function () {
     // document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
     let cookieCheck = document.cookie.split("=");
     console.log(cookieCheck[0]);
+    console.log(cookieCheck[1]);
     if (cookieCheck[0] === "uid" && cookieCheck[1]) {
-      let response = await fetch(`/api/users/${cookieCheck[1]}`)
-      let result = await response.json()
-      console.log(result);
-        let inAll = `
+       fetch(`/api/users/${cookieCheck[1]}`)
+       .then((response) => {
+           return response.json();
+       })
+        .then((data) => {
+            console.log(data);
+            let inAll = `
                 <li class="nav-item">
                         <a id = "logout" class="nav-link">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id = "username">Hi, ${result.firstname}</a>
+                    <a class="nav-link" id="username">Hi, ${data.firstname}</a>
                 </li>
                     `;
-        userStatus.innerHTML = inAll;
+            userStatus.innerHTML = inAll;
+        }) 
+        .catch((err) => {
+            console.log('ERROR:', err.message);
+        })
+      
+        
       
     }
-    let logoutBtn = document.getElementById("logout");
-        logoutBtn.addEventListener("click", function (e) {
-            document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-            window.location.href = "index.html";
-        })
-  }
-}
+    // let logoutBtn = document.getElementById("logout");
+    //     logoutBtn.addEventListener("click", function (e) {
+    //         document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    //         window.location.href = "index.html";
+    //     })
+  //}
+//}
                 
                           
 
@@ -72,6 +82,7 @@ if (window.location.href.includes("register.html")) {
 
                 const gradsponse = await fetch("/api/graduationYears");
                 const gradYears = await gradsponse.json();
+                
                 
                 let myOptions = gradYears.map(element => {
                     return `<option value = "${element}">${element}</option>`
